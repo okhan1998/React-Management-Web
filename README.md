@@ -1,3 +1,7 @@
+## Management System
+
+본 프로젝트는 나동빈님의 React강의를 Hook을 사용하여 재구현한 코드입니다.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
