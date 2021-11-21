@@ -1,6 +1,6 @@
 import './App.css';
 import { Customer } from './components/Customer';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
@@ -20,32 +20,29 @@ const useStyles = makeStyles({
   }
 });
 
-const customers = [{
-  'id': 1,
-  'image': 'https://placeimg.com/64/64/1',
-  'name': '조지훈',
-  'birthday': '980404',
-  'gender': '남자',
-  'job': '대학생'
-},
-{
-  'id': 2,
-  'image': 'https://placeimg.com/64/64/2',
-  'name': '유연아',
-  'birthday': '981127',
-  'gender': '여자',
-  'job': '대학생'
-},
-{
-  'id': 3,
-  'image': 'https://placeimg.com/64/64/3',
-  'name': '쿠키',
-  'birthday': '170404',
-  'gender': '여자',
-  'job': '강아지'
-}]
+
 
 function App() {
+  const [customers, setCustomers] = useState([])
+
+  useEffect(() => {
+
+    async function callAPi() {
+      const response = await fetch('/api/customers');
+      const body = await response.json();
+      console.log(body);
+      return body;
+    }
+    
+    callAPi()
+      .then(res => setCustomers(res))
+      .catch(err=> console.log(err));
+  }, ['/api/customers'])
+
+
+
+
+
   const classes = useStyles();
   return (
     <Paper className={classes.root}>
@@ -61,7 +58,7 @@ function App() {
         </TableRow>
       </TableHead>
       <TableBody>
-      {customers.map(customer => (<Customer key={customer.id} id={customer.id} image={customer.image} name={customer.name} birthday={customer.birthday} gender={customer.gender} job={customer.job}/>))}
+      {customers?.map(customer => (<Customer key={customer.id} id={customer.id} image={customer.image} name={customer.name} birthday={customer.birthday} gender={customer.gender} job={customer.job}/>))}
       </TableBody>
     </Table>
     </Paper>
