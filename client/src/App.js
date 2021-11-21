@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
 import { makeStyles } from '@mui/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const useStyles = makeStyles({
   root: {
@@ -17,14 +18,17 @@ const useStyles = makeStyles({
   },
   table: {
     minWidth: 1080
+  },
+  progress: {
+    margin: 2
   }
 });
 
 
 
 function App() {
-  const [customers, setCustomers] = useState([])
-
+  const [customers, setCustomers] = useState([]);
+  const [progress, setProgress] = useState(0);
   useEffect(() => {
 
     async function callAPi() {
@@ -33,13 +37,20 @@ function App() {
       console.log(body);
       return body;
     }
-    
     callAPi()
       .then(res => setCustomers(res))
       .catch(err=> console.log(err));
   }, ['/api/customers'])
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
+    }, 800);
 
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
 
 
@@ -58,7 +69,13 @@ function App() {
         </TableRow>
       </TableHead>
       <TableBody>
-      {customers?.map(customer => (<Customer key={customer.id} id={customer.id} image={customer.image} name={customer.name} birthday={customer.birthday} gender={customer.gender} job={customer.job}/>))}
+      {customers[0] != null ? customers.map(customer => (<Customer key={customer.id} id={customer.id} image={customer.image} name={customer.name} birthday={customer.birthday} gender={customer.gender} job={customer.job}/>)) :
+        <TableRow>
+          <TableCell colSpan="6" align="center">
+            <CircularProgress variant="determinate" value={progress} />
+          </TableCell>
+        </TableRow>
+      }  
       </TableBody>
     </Table>
     </Paper>
