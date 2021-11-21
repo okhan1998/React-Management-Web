@@ -1,5 +1,24 @@
 import './App.css';
 import { Customer } from './components/Customer';
+import React from 'react';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Paper from '@mui/material/Paper';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles({
+  root: {
+    width: '100%',
+    marginTop: 5,
+    overflowX: 'auto'
+  },
+  table: {
+    minWidth: 1080
+  }
+});
 
 const customers = [{
   'id': 1,
@@ -27,10 +46,25 @@ const customers = [{
 }]
 
 function App() {
+  const classes = useStyles();
   return (
-      customers.map(customer => (<Customer key={customer.id} id={customer.id} image={customer.image} name={customer.name} birthday={customer.birthday} gender={customer.gender} job={customer.job}/>
-      ))
-  );
-}
+    <Paper className={classes.root}>
+    <Table className={classes.table}>
+      <TableHead>
+        <TableRow>
+          <TableCell>번호</TableCell>
+          <TableCell>이미지</TableCell>
+          <TableCell>이름</TableCell>
+          <TableCell>생년월일</TableCell>
+          <TableCell>성별</TableCell>
+          <TableCell>직업</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+      {customers.map(customer => (<Customer key={customer.id} id={customer.id} image={customer.image} name={customer.name} birthday={customer.birthday} gender={customer.gender} job={customer.job}/>))}
+      </TableBody>
+    </Table>
+    </Paper>
+  )}
 
-export default App;
+export default (App);
