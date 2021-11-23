@@ -1,5 +1,6 @@
 import './App.css';
 import { Customer } from './components/Customer';
+import CustomerAdd from './components/CustomerAdd';
 import React, { useState, useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -29,6 +30,24 @@ const useStyles = makeStyles({
 function App() {
   const [customers, setCustomers] = useState([]);
   const [progress, setProgress] = useState(0);
+  
+  const stateRefresh = () => {
+    setCustomers([])
+    setProgress(0);
+
+    async function callAPi() {
+      const response = await fetch('/api/customers');
+      const body = await response.json();
+      console.log(body);
+      return body;
+    }
+    callAPi()
+      .then(res => setCustomers(res))
+      .catch(err=> console.log(err));
+  }
+
+
+
   useEffect(() => {
 
     async function callAPi() {
@@ -56,6 +75,7 @@ function App() {
 
   const classes = useStyles();
   return (
+    <div>
     <Paper className={classes.root}>
     <Table className={classes.table}>
       <TableHead>
@@ -78,7 +98,9 @@ function App() {
       }  
       </TableBody>
     </Table>
-    </Paper>
+    </Paper>ß
+    <CustomerAdd stateRefresh={stateRefresh}/>
+    </div>
   )}
 
 export default (App);
