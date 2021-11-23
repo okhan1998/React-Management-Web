@@ -86,10 +86,11 @@ function App() {
           <TableCell>생년월일</TableCell>
           <TableCell>성별</TableCell>
           <TableCell>직업</TableCell>
+          <TableCell>설정</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-      {customers[0] != null ? customers.map(customer => (<Customer key={customer.id} id={customer.id} image={customer.image} name={customer.name} birthday={customer.birthday} gender={customer.gender} job={customer.job}/>)) :
+      {customers[0] != null ? customers.map(customer => (<Customer stateRefresh={stateRefresh} key={customer.id} id={customer.id} image={customer.image} name={customer.name} birthday={customer.birthday} gender={customer.gender} job={customer.job}/>)) :
         <TableRow>
           <TableCell colSpan="6" align="center">
             <CircularProgress variant="determinate" value={progress} />
